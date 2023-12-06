@@ -25,7 +25,7 @@ int main()
         map.clear();
         map[0] = 0;
 
-        for (int i = 0; i < value_count; i++)
+        while (value_count--)
         {
 
             int value;

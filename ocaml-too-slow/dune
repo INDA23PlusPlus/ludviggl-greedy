@@ -1,0 +1,4 @@
+(executables
+  (public_names bank train_sorting change classrooms bond orders joggers)
+  (modules bank train_sorting change classrooms bond orders joggers)
+  (libraries str))

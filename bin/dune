@@ -1,4 +1,0 @@
-(executables
-  (public_names bank train_sorting)
-  (modules bank train_sorting)
-  (libraries str))

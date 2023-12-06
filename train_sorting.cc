@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-struct car_t { int w, i, dl, il; };
+struct car_t { int w, i, dl, il, mdl, mil; };
 
 inline auto cmp(const car_t &lhs, const car_t &rhs)
 {
@@ -29,6 +29,8 @@ int main()
 
     std::sort(cars, cars + n, cmp);
 
+    int mdl = 0, mil = 0;
+
     for (int i = 0; i < n; i++)
     {
         cars[i].dl = 1;
@@ -40,6 +42,13 @@ int main()
                 cars[i].dl = cars[j].dl + 1;
             }
         }
+
+        if (mdl < cars[i].dl)
+        {
+            mdl = cars[i].dl;
+        }
+
+        cars[i].mdl = mdl;
     }
 
     for (int i = n - 1; i >= 0; i--)
@@ -53,31 +62,27 @@ int main()
                 cars[i].il = cars[j].il + 1;
             }
         }
+
+        if (mil < cars[i].il)
+        {
+            mil = cars[i].il;
+        }
+
+        cars[i].mil = mil;
     }
 
     int m = 0;
 
-    for (int i = 0; i < n; i++)
+    if (cars[0].mil > m) m = cars[0].mil;
+    if (cars[n - 1].mdl > m) m = cars[n - 1].mdl;
+
+    for (int i = 0; i < n - 1; i++)
     {
-        int ll = 0, rl = 0;
-
-        for (int l = 0; l < i; l++)
+        int s = cars[i].mdl + cars[i + 1].mil;
+        if (s > m)
         {
-            if (cars[l].dl > ll)
-            {
-                ll = cars[l].dl;
-            }
+            m = s;
         }
-
-        for (int r = i; r < n; r++)
-        {
-            if (cars[r].il > rl)
-            {
-                rl = cars[r].il;
-            }
-        }
-
-        if (ll + rl > m) m = ll + rl;
     }
 
     std::cout << m;
