@@ -1,57 +1,42 @@
 
-// Submission ID: 12486019
+// Submission ID: 12487764
 
+#include <functional>
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <functional>
-
-#define MAX 200_000
-
-struct act { int start, stop; };
+#include <set>
 
 int main()
 {
     int n, k;
     std::cin >> n >> k;
 
+    std::vector<std::pair<int, int>> activities (n);
 
-    std::vector<act> acts(n);
-
-    for (int i = 0; i < n; i++)
+    for (auto &[end, start] : activities)
     {
-        std::cin >> acts[i].start >> acts[i].stop;
+        std::cin >> start >> end;
     }
 
-    std::sort(
-        acts.begin(),
-        acts.end(),
-        [] (const act &lhs, const act &rhs) {
-            return lhs.stop == rhs.stop ?
-                lhs.start < rhs.start :
-                lhs.stop < rhs.stop;
-        }
-    );
+    std::sort(activities.begin(), activities.end());
 
-
-    std::vector<int> rooms (k, 0);
+    std::multiset<int, std::greater<>> rooms;
+    while (k--) rooms.insert(0);
 
     int scheduled = 0;
 
-    for (auto act : acts)
+    for (auto [end, start] : activities)
     {
-        auto room = std::upper_bound(rooms.begin(), rooms.end(), act.start, std::greater<int>());
+        const auto room = rooms.upper_bound(start);
 
         if (room != rooms.end())
         {
-            *room = act.stop;
+            rooms.erase(room);
+            rooms.insert(end);
             scheduled++;
-
-            auto insert = std::upper_bound(rooms.begin(), room, *room, std::greater<int>());
-            std::rotate(insert, room, room + 1);
         }
     }
-
 
     std::cout << scheduled;
 }
